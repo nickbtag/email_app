@@ -2,7 +2,6 @@
 from dataclasses import field
 from distutils.log import debug
 from operator import is_
-from tkinter.tix import COLUMN
 from validate_email import validate_email
 from flask import Flask, render_template, request
 import csv
