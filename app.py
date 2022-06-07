@@ -19,10 +19,11 @@ def index():
 
 @app.route('/datamultipleemails',methods=['GET','POST'])
 def data():
-    global file
+    global file, filename
     data = []
     if request.method == 'POST':
         file = request.files['upload-file']
+        filename = file.filename
         file.save(file.filename)
         with open(file.filename) as f:
             print(f)
@@ -54,12 +55,12 @@ def data():
                 bad_emails.append(data[i]['Email'])
                 i += 1
         
-        with open(file, 'w') as csvfile:
+        with open(file.filename, 'w') as csvfile:
             writer = csv.DictWriter(csvfile, fieldnames = list_of_column_names)
             writer.writeheader()
             writer.writerows(data)
         
-        table_data = pd.read_csv(file)
+        table_data = pd.read_csv(file.filename)
                 
         return render_template('dataMultipleEmails.html', data=data, columns=list_of_column_names,good_emails=good_emails, bad_emails=bad_emails, csv_file=file, tables=[table_data.to_html()],titles=[''])
 
@@ -78,11 +79,13 @@ def data2():
 
 @app.route('/clearEmail',methods=['GET','POST'])
 def data3():
-    global file
+    global file, filename
+    print(filename)
     data = []
     list_of_column_names = []
     if request.method == 'POST':
-        with open(file) as f:
+        
+        with open(filename) as f:
             for i in csv.DictReader(f):
                 data.append(i)       
         dict_from_csv = list(data)[0]
@@ -102,12 +105,12 @@ def data3():
             data[i].pop('Valid')
             i += 1
             
-        with open(file, 'w') as csvfile:
+        with open(filename, 'w') as csvfile:
             writer = csv.DictWriter(csvfile, fieldnames = list_of_column_names)
             writer.writeheader()
             writer.writerows(data)
         
-        table_data = pd.read_csv(file)
+        table_data = pd.read_csv(filename)
 
 
         return render_template('cleared.html', data=data, tables=[table_data.to_html()],titles=[''])
