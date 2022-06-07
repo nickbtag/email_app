@@ -13,7 +13,7 @@ file = "csv_placeholder.csv"
 
 app = Flask(__name__)
 
-@app.route('/home', methods=['GET','POST'])
+@app.route('/', methods=['GET','POST'])
 def index():
     global file
     return render_template('index.html')
