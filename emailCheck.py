@@ -1,5 +1,6 @@
 ''' For checking emails '''
 from dataclasses import field
+from distutils.log import debug
 from operator import is_
 from tkinter.tix import COLUMN
 from validate_email import validate_email
@@ -7,7 +8,6 @@ from flask import Flask, render_template, request
 import csv
 import pandas as pd
 import os
-import waitress
 
 file = "csv_placeholder.csv"
 
@@ -113,6 +113,5 @@ def data3():
 
 
 if __name__ == '__main__':
-    app.debug = False
-    port = int(os.environ.get('PORT', 33507))
-    waitress.serve(app, port=port)
+    app.run(debug=True)
+    
