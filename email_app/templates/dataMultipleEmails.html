@@ -1,0 +1,41 @@
+<header> Done! </header>
+<div>
+
+</div>
+<b> These are Valid emails:</b>
+{{ good_emails | safe }}
+<div>
+<b> These are NOT Valid emails:</b>
+{{ bad_emails | safe }}
+
+<i> Save these column names for later...</i>
+{{ columns | safe }}    
+</div>
+
+<form class="" action="home" method="post">
+    <input type="submit" name="" value="Go Back">
+</div>
+</form>
+
+<body>
+    <div align="center">
+        <table>
+            <h1>
+                {% for table in tables%}
+                <h2>{{titles[loop.index]}}</h2>
+                {{table | safe}}
+                {% endfor %}
+            </h1>
+        </table>
+    </div>
+
+</body>
+
+<body>
+    <form class="" action="clearEmail" method="post">
+        <div align="center"> 
+            <i> Would you like to clear Non-Valid emails?</i>
+            <input type="submit" name="" value="CLEAR">
+        </div>
+    </form>
+</body>

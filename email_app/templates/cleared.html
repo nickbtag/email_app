@@ -1,0 +1,25 @@
+<header> Done! </header>
+<div>
+    <form class="" action="home" method="post">
+        <input type="submit" name="" value="Go Back">
+    </form>
+</div>
+
+<div align="center">
+<b> These emails have been edited:</b>
+</div>
+
+
+<body>
+    <div align="center">
+        <table>
+            <h1>
+                {% for table in tables%}
+                <h2>{{titles[loop.index]}}</h2>
+                {{table | safe}}
+                {% endfor %}
+            </h1>
+        </table>
+    </div>
+
+</body>
