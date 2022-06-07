@@ -1,3 +1,4 @@
+''' For checking emails '''
 from dataclasses import field
 from operator import is_
 from tkinter.tix import COLUMN
