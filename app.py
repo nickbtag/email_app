@@ -22,7 +22,7 @@ def data():
     global file
     data = []
     if request.method == 'POST':
-        file = request.form['upload-file']
+        file = request.files['upload-file']
         with open(file) as f:
             for i in csv.DictReader(f):
                 data.append(i)
