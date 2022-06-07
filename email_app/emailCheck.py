@@ -7,6 +7,7 @@ from flask import Flask, render_template, request
 import csv
 import pandas as pd
 import os
+import waitress
 
 file = "csv_placeholder.csv"
 
@@ -112,4 +113,6 @@ def data3():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.debug = False
+    port = int(os.environ.get('PORT', 33507))
+    waitress.serve(app, port=port)
