@@ -1,1 +1,1 @@
-web: gunicorn app:emailCheck
+web: gunicorn app:app
