@@ -59,7 +59,8 @@ def data():
             writer = csv.DictWriter(csvfile, fieldnames = list_of_column_names)
             writer.writeheader()
             writer.writerows(data)
-        
+        file.save(file.filename)
+
         table_data = pd.read_csv(file.filename)
                 
         return render_template('dataMultipleEmails.html', data=data, columns=list_of_column_names,good_emails=good_emails, bad_emails=bad_emails, csv_file=file, tables=[table_data.to_html()],titles=[''])
@@ -109,6 +110,7 @@ def data3():
             writer = csv.DictWriter(csvfile, fieldnames = list_of_column_names)
             writer.writeheader()
             writer.writerows(data)
+        
         
         table_data = pd.read_csv(filename)
 
