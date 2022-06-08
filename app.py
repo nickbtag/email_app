@@ -33,7 +33,7 @@ def data():
             print(f)
             for i in csv.DictReader(f):
                 data.append(i)
-
+                
             dict_from_csv = list(data)[0]
             list_of_column_names = list(dict_from_csv.keys())
             list_of_column_names.append('Valid')
@@ -101,7 +101,7 @@ def data4():
             attachment = MIMEApplication(f.read(), Name=basename(name_of_file))
             attachment['Content-Disposition'] = 'attachment: filename="{}"'.format(basename(name_of_file))
         msg.attach(attachment)
-        
+
         server = smtplib.SMTP('smtp-relay.sendinblue.com', 587)
         server.login(from_address, 'rSMfysqbap4Cv9Xh')
         server.send_message(msg, from_addr=from_address, to_addrs=[sender_address])
