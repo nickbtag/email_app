@@ -24,7 +24,7 @@ def data():
     if request.method == 'POST':
         file = request.files['upload-file']
         filename = file.filename
-        file.save(file.filename)
+        
         with open(file.filename) as f:
             print(f)
             for i in csv.DictReader(f):
@@ -59,7 +59,7 @@ def data():
             writer = csv.DictWriter(csvfile, fieldnames = list_of_column_names)
             writer.writeheader()
             writer.writerows(data)
-        file.save(file.filename)
+        
 
         table_data = pd.read_csv(file.filename)
                 
