@@ -8,13 +8,13 @@ import csv
 import pandas as pd
 import os
 
-file = "csv_placeholder.csv"
+filename = "csv_placeholder.csv"
 
 app = Flask(__name__)
 
 @app.route('/', methods=['GET','POST'])
 def index():
-    global file
+    global file, filename
     return render_template('index.html')
 
 @app.route('/datamultipleemails',methods=['GET','POST'])
