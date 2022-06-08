@@ -25,7 +25,7 @@ def data():
         file = request.files['upload-file']
         filename = file.filename
         file.save(file.filename)
-        with open(file.filename) as f:
+        with open(filename) as f:
             print(f)
             for i in csv.DictReader(f):
                 data.append(i)
@@ -55,13 +55,13 @@ def data():
                 bad_emails.append(data[i]['Email'])
                 i += 1
         
-        with open(file.filename, 'w') as csvfile:
+        with open(filename, 'w') as csvfile:
             writer = csv.DictWriter(csvfile, fieldnames = list_of_column_names)
             writer.writeheader()
             writer.writerows(data)
         
 
-        table_data = pd.read_csv(file.filename)
+        table_data = pd.read_csv(filename)
                 
         return render_template('dataMultipleEmails.html', data=data, columns=list_of_column_names,good_emails=good_emails, bad_emails=bad_emails, csv_file=file, tables=[table_data.to_html()],titles=[''])
 
