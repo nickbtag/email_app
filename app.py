@@ -74,7 +74,7 @@ def data2():
     global file
     if request.method == 'POST':
         email = request.form['email']
-        print(email)
+        
         is_valid = validate_email(email,verify=True)
         if is_valid:
             data = "YES! {} is a valid email.".format(email)
