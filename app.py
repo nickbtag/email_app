@@ -107,11 +107,7 @@ def data4():
         server.login(from_address, 'rSMfysqbap4Cv9Xh')
         server.send_message(msg, from_addr=from_address, to_addrs=[sender_address])
 
-
-
-
-
-        return render_template('dataOneEmail.html', data=data)
+        return render_template('emailSent.html',sender=sender_address)
 
 
 @app.route('/clearEmail',methods=['GET','POST'])
