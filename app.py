@@ -33,7 +33,7 @@ def data():
             print(f)
             for i in csv.DictReader(f):
                 data.append(i)
-                
+
             dict_from_csv = list(data)[0]
             list_of_column_names = list(dict_from_csv.keys())
             list_of_column_names.append('Valid')
@@ -47,7 +47,7 @@ def data():
             else:
                 data[i]["Valid"] = "NO"
                 i += 1
-        
+        print("data: ", data)
         i = 0
         good_emails = []
         bad_emails = []
