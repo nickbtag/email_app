@@ -42,10 +42,10 @@ def data():
         while i < len(data):
             is_valid = validate_email(data[i]['Email'],verify=True)
             if is_valid:
-                data[i]["Valid"] = "YES"
+                data[i]['Valid'] = "YES"
                 i += 1
             else:
-                data[i]["Valid"] = "NO"
+                data[i]['Valid'] = "NO"
                 i += 1
         print("data: ", data)
         i = 0
