@@ -47,7 +47,7 @@ def data():
             else:
                 data[i]['Valid'] = "NO"
                 i += 1
-        print("data: ", data)
+        
         i = 0
         good_emails = []
         bad_emails = []
