@@ -7,7 +7,12 @@ from flask import Flask, render_template, request
 import csv
 import pandas as pd
 import os
-
+import smtplib
+from email import message
+from os.path import basename
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+from email.mime.application import MIMEApplication
 
 app = Flask(__name__)
 
@@ -77,6 +82,37 @@ def data2():
 
         return render_template('dataOneEmail.html', data=data)
 
+
+@app.route('/sendEmail',methods=['GET','POST'])
+def data4():
+    global name_of_file
+    if request.method == 'POST':
+        sender_address = request.form['sender']
+        from_address = 'battaglia@cua.edu'
+        subject = 'CSV Email List'
+        content = 'Thank you for using my application, enjoy your valid email list!'
+        msg = MIMEMultipart()
+        msg['From'] = from_address
+        msg['To'] = sender_address
+        msg['Subject'] = subject
+        body = MIMEText(content, 'plain')
+        msg.attach(body)
+        with open(name_of_file, 'r') as f:
+            attachment = MIMEApplication(f.read(), Name=basename(name_of_file))
+            attachment['Content-Disposition'] = 'attachment: filename="{}"'.format(basename(name_of_file))
+        msg.attach(attachment)
+        
+        server = smtplib.SMTP('smtp-relay.sendinblue.com', 587)
+        server.login(from_address, 'rSMfysqbap4Cv9Xh')
+        server.send_message(msg, from_addr=from_address, to_addrs=[sender_address])
+
+
+
+
+
+        return render_template('dataOneEmail.html', data=data)
+
+
 @app.route('/clearEmail',methods=['GET','POST'])
 def data3():
     global file
@@ -108,7 +144,8 @@ def data3():
             writer = csv.DictWriter(csvfile, fieldnames = list_of_column_names)
             writer.writeheader()
             writer.writerows(data)
-        
+            
+
         
         table_data = pd.read_csv(name_of_file)
 
