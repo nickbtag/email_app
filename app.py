@@ -3,7 +3,7 @@ from dataclasses import field
 from distutils.log import debug
 from operator import is_
 from validate_email import validate_email
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, send_file
 import csv
 import pandas as pd
 import os
@@ -67,7 +67,7 @@ def data():
 
         table_data = pd.read_csv(file.filename)
                 
-        return render_template('dataMultipleEmails.html', data=data, columns=list_of_column_names,good_emails=good_emails, bad_emails=bad_emails, csv_file=file, tables=[table_data.to_html()],titles=[''])
+        return render_template('dataMultipleEmails.html', data=data, columns=list_of_column_names,good_emails=good_emails, bad_emails=bad_emails, csv_file=file, tables=[table_data.to_html()],titles=[''], name_of_file=name_of_file)
 
 @app.route('/dataoneemail',methods=['GET','POST'])
 def data2():
@@ -84,30 +84,12 @@ def data2():
         return render_template('dataOneEmail.html', data=data)
 
 
-@app.route('/sendEmail',methods=['GET','POST'])
+@app.route('/download',methods=['GET','POST'])
 def data4():
     global name_of_file
     if request.method == 'POST':
-        sender_address = request.form['sender']
-        from_address = 'battaglia@cua.edu'
-        subject = 'CSV Email List'
-        content = 'Thank you for using my application, enjoy your valid email list!'
-        msg = MIMEMultipart()
-        msg['From'] = from_address
-        msg['To'] = sender_address
-        msg['Subject'] = subject
-        body = MIMEText(content, 'plain')
-        msg.attach(body)
-        with open(name_of_file, 'r') as f:
-            attachment = MIMEApplication(f.read(), Name=basename(name_of_file))
-            attachment['Content-Disposition'] = 'attachment: filename="{}"'.format(basename(name_of_file))
-        msg.attach(attachment)
-
-        server = smtplib.SMTP('smtp-relay.sendinblue.com', 587)
-        server.login(from_address, 'rSMfysqbap4Cv9Xh')
-        server.send_message(msg, from_addr=from_address, to_addrs=[sender_address])
-
-        return render_template('emailSent.html',sender=sender_address)
+       
+        return send_file(name_of_file, as_attachment=True), render_template('download.html')
 
 
 @app.route('/clearEmail',methods=['GET','POST'])
