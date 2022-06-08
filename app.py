@@ -24,7 +24,7 @@ def data():
     if request.method == 'POST':
         file = request.files['upload-file']
         filename = file.filename
-        
+        file.save(file.filename)
         with open(file.filename) as f:
             print(f)
             for i in csv.DictReader(f):
