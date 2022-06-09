@@ -16,6 +16,9 @@ from email.mime.application import MIMEApplication
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.utils import secure_filename
 import urllib.request
+import socket
+import re
+import dns.resolver
 
 app = Flask(__name__)
 #app.config['SECRET_KEY'] = 'nicks-secret'
@@ -55,13 +58,49 @@ def data():
 
         i = 0
         while i < len(data):
-            is_valid = validate_email(data[i]['Email'],verify=True)
-            if is_valid:
+            valid = False
+            addressToVerify = data[i]['Email']
+            match = re.match('^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$', addressToVerify)
+
+            if match == None:
+                print('Bad Syntax')
+                valid = False
+            else:
+                valid = True
+
+            records = dns.resolver.query(addressToVerify.split("@",1)[1], 'MX')
+            mxRecord = records[0].exchange
+            mxRecord = str(mxRecord)
+
+            # Get local server hostname
+            host = socket.gethostname()
+            
+            # SMTP lib setup (use debug level for full output)
+            server = smtplib.SMTP()
+            server.set_debuglevel(0)
+            
+            # SMTP Conversation
+            server.connect(mxRecord)
+            server.helo(host)
+            server.mail('me@domain.com')
+            code, message = server.rcpt(str(addressToVerify))
+            server.quit()
+            
+            # Assume 250 as Success
+            if code == 250:
                 data[i]['Valid'] = "YES"
                 i += 1
             else:
                 data[i]['Valid'] = "NO"
                 i += 1
+             
+            #is_valid = validate_email(data[i]['Email'],verify=True)
+            #if is_valid:
+            #    data[i]['Valid'] = "YES"
+            #    i += 1
+            #else:
+            #    data[i]['Valid'] = "NO"
+            #    i += 1
         
         i = 0
         good_emails = []
