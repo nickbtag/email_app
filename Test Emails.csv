@@ -1,4 +1,4 @@
-First Name,Last Name,Email,Phone
-Nick,Battaglia,battaglia@cua.edu,4437527027
-Ally,Criscuolo,allyycriscuolo@gmail.com,2155270942
-Jack,Hardy,fake.email@gmail.com,3423452334
+First Name,Last Name,Email,Phone,Valid
+Nick,Battaglia,battaglia@cua.edu,4437527027,YES
+Ally,Criscuolo,allyycriscuolo@gmail.com,2155270942,YES
+Jack,Hardy,fake.email@gmail.com,3423452334,YES
