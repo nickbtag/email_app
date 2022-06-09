@@ -2,7 +2,7 @@
 from dataclasses import field
 from distutils.log import debug
 from operator import is_
-from validate_email import validate_email
+#from validate_email import validate_email
 from flask import Flask, render_template, request, send_file
 import csv
 import pandas as pd
@@ -19,7 +19,7 @@ import urllib.request
 import socket
 import re
 import dns.resolver
-
+from validate import validate_email
 app = Flask(__name__)
 #app.config['SECRET_KEY'] = 'nicks-secret'
 #app.config['DATABASE_URL'] = 'postgres://duvsvrrssismzi:792e6507bf8b234745da05aa5d52fac4e7c5f3c52c88882aed350b219db916b9@ec2-54-147-33-38.compute-1.amazonaws.com:5432/ddd97qvhel1m78'
