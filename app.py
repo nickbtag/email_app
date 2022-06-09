@@ -13,8 +13,21 @@ from os.path import basename
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from email.mime.application import MIMEApplication
+from flask_sqlalchemy import SQLAlchemy
+from werkzeug.utils import secure_filename
+import urllib.request
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'nicks-secret'
+app.config['DATABASE_URL'] = 'postgres://duvsvrrssismzi:792e6507bf8b234745da05aa5d52fac4e7c5f3c52c88882aed350b219db916b9@ec2-54-147-33-38.compute-1.amazonaws.com:5432/ddd97qvhel1m78'
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+
+db = SQLAlchemy(app)
+
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(120), index=True, unique=True)
+    csv_file = db.Column(db.String(150))
 
 @app.route('/', methods=['GET','POST'])
 def index():
@@ -27,7 +40,8 @@ def data():
     data = []
     if request.method == 'POST':
         file = request.files['upload-file']
-        name_of_file = str(file.filename)
+        rs_username = request.form['username']
+        name_of_file = secure_filename(file.filename)
         file.save(file.filename)
         with open(file.filename) as f:
             print(f)
@@ -64,7 +78,10 @@ def data():
             writer.writeheader()
             writer.writerows(data)
         
-
+        newFile = User(csv_file=file.filename, username=rs_username)
+        db.session.add(newFile)
+        db.session.commit()
+        
         table_data = pd.read_csv(file.filename)
                 
         return render_template('dataMultipleEmails.html', data=data, columns=list_of_column_names,good_emails=good_emails, bad_emails=bad_emails, csv_file=file, tables=[table_data.to_html()],titles=[''], name_of_file=name_of_file)
